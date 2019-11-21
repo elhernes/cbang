@@ -51,7 +51,7 @@ using namespace std;
 namespace {
   JsPropertyIdRef getPropID(const string &key) {
     JsPropertyIdRef id;
-    CHAKRA_CHECK(JsCreatePropertyIdUtf8(CPP_TO_C_STR(key), key.length(), &id));
+    CHAKRA_CHECK(JsCreatePropertyId(CPP_TO_C_STR(key), key.length(), &id));
     return id;
   }
 
@@ -87,8 +87,8 @@ Value::Value(const SmartPointer<js::Value> &value) :
 
 
 Value::Value(const string &value) {
-  CHAKRA_CHECK(JsCreateStringUtf8
-               ((uint8_t *)CPP_TO_C_STR(value), value.length(), &ref));
+  CHAKRA_CHECK(JsCreateString
+               (CPP_TO_C_STR(value), value.length(), &ref));
 }
 
 
@@ -179,10 +179,10 @@ string Value::toString() const {
   CHAKRA_CHECK(JsConvertValueToString(this->ref, &ref));
 
   size_t size;
-  CHAKRA_CHECK(JsCopyStringUtf8(ref, 0, 0, &size));
+  CHAKRA_CHECK(JsCopyString(ref, 0, 0, &size));
 
   SmartPointer<char>::Array buffer = new char[size];
-  CHAKRA_CHECK(JsCopyStringUtf8(ref, (uint8_t *)buffer.get(), size, 0));
+  CHAKRA_CHECK(JsCopyString(ref, buffer.get(), size, 0));
 
   return string(buffer.get(), size);
 }
@@ -397,7 +397,7 @@ const char *Value::errorToString(int error) {
   case JsErrorInvalidContext: return "Invalid context";
   case JsInvalidModuleHostInfoKind: return "Invalid module host info kind";
   case JsErrorModuleParsed: return "Module parsed";
-  case JsErrorModuleEvaluated: return "Module evaluated";
+  case JsErrorModuleNotEvaluated: return "Module Not evaluated";
   case JsErrorOutOfMemory: return "Out of memory";
   case JsErrorBadFPUState: return "Bad FPU state";
   case JsErrorScriptException: return "Script exception";
