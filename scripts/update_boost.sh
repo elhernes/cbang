@@ -1,9 +1,10 @@
 #!/bin/bash -e
 
-VERSION=1.69.0
+VERSION=1.71.0
 NAME=boost_$(echo $VERSION | tr . _)
 PKG=$NAME.7z
-URL=https://sf.net/projects/boost/files/boost/$VERSION/$PKG
+URL=https://dl.bintray.com/boostorg/release/$VERSION/source/$PKG
+#URL=https://sf.net/projects/boost/files/boost/$VERSION/$PKG
 BCP=./$NAME/dist/bin/bcp
 
 # Get boost
@@ -27,6 +28,10 @@ $BCP --scan --boost=$NAME --unix-lines $(
 
 # Remove uneeded files
 for PATH in Jamroot libs/config libs/date_time libs/smart_ptr \
+                    $(find src/boost/boost -name edg -o -name dmc \
+                           -o -name no_ctps -o -name no_ttp -o -name mwcw \
+                           -o -name msvc70 -o -name msvc60 -o -name bcc_pre590 \
+                           -o -name bcc551 -o -name bcc) \
                     "libs/iostreams/src/lzma.cpp" \
                     "libs/iostreams/src/zstd.*"; do
     /bin/rm -rf src/boost/$PATH

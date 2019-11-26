@@ -448,12 +448,9 @@ namespace cb {
 
       LOG_DEBUG(4, "Removing directory '" << path << "'");
 
-      try {
-        if (withChildren) rmtree(path);
-        else fs::remove(path);
-      } catch (const fs::filesystem_error &e) {
-        THROW("Failed to remove directory '" << path << "': " << e.what());
-      }
+      if (withChildren) rmtree(path);
+      else if (::rmdir(path.c_str()))
+        THROW("Failed to remove directory '" << path << "': " << SysError());
     }
 
 
@@ -535,7 +532,7 @@ namespace cb {
 
     void rmtree(const string &path) {
       if (!exists(path)) return;
-      if (!isDirectory(path)) {unlink(path); return;}
+      if (!isDirectory(path)) return (void)unlink(path);
 
       DirectoryWalker walker(path, ".*", ~0, true);
 
@@ -570,11 +567,10 @@ namespace cb {
 
     bool unlink(const string &filename) {
       LOG_DEBUG(4, "Removing file '" << filename << "'");
-      try {
-        return fs::remove(filename);
-      } catch (const exception &e) {
-        THROW(e.what());
-      }
+      if (!exists(filename)) return false;
+      if (::unlink(filename.c_str()))
+        THROW("Failed to remove '" << filename << "': " << SysError());
+      return true;
     }
 
 

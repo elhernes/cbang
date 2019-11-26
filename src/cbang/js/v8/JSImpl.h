@@ -53,14 +53,15 @@ namespace cb {
       v8::Isolate *isolate = 0;
 
       struct Scope {
+        v8::Locker lock;
         v8::Isolate::Scope isoScope;
         v8::HandleScope globalScope;
 
-        Scope(v8::Isolate *iso) : isoScope(iso), globalScope(iso) {}
+        Scope(v8::Isolate *iso) : lock(iso), isoScope(iso), globalScope(iso) {}
       };
 
       SmartPointer<Scope> scope;
-      Context ctx;
+      SmartPointer<Context> ctx;
 
       std::vector<SmartPointer<js::Callback> > callbacks;
 
