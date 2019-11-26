@@ -78,7 +78,8 @@ JSImpl::~JSImpl() {
 
 void JSImpl::init(int *argc, char *argv[]) {
   if (argv) v8::V8::SetFlagsFromCommandLine(argc, argv, true);
-  v8::V8::InitializePlatform(v8::platform::CreateDefaultPlatform());
+#warning "unique_ptr leaks"
+  v8::V8::InitializePlatform(v8::platform::NewDefaultPlatform().get());
   v8::V8::Initialize();
 }
 

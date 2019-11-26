@@ -198,12 +198,18 @@ Version SystemInfo::getOSVersion() const {
   return Version((uint8_t)info.dwMajorVersion, (uint8_t)info.dwMinorVersion);
 
 #elif defined(__APPLE__)
-  SInt32 major;
-  SInt32 minor;
-  SInt32 release;
-  Gestalt(gestaltSystemVersionMajor,  &major);
-  Gestalt(gestaltSystemVersionMinor,  &minor);
-  Gestalt(gestaltSystemVersionBugFix, &release);
+  static short int version_[3] = {0};
+  if (!version_[0]) {
+    version_[0] = version_[1] = version_[2] = -1;
+    char str[256] = {0};
+    size_t size = sizeof(str);
+    int ret = sysctlbyname("kern.osrelease", str, &size, NULL, 0);
+    if (ret == 0) sscanf(str, "%hd.%hd.%hd",
+			 &version_[0], &version_[1], &version_[2]);
+  }
+
+  SInt32 major=version_[0];
+  SInt32 minor=version_[1];
 
   return Version((uint8_t)major, (uint8_t)minor, (uint8_t)release);
 
@@ -239,11 +245,12 @@ void SystemInfo::add(Info &info) {
   info.add(category, "OS Version",
            SSTR((unsigned)osVersion.getMajor() << '.'
                 << (unsigned)osVersion.getMinor()));
-
+#if 0
   info.add(category, "Has Battery",
            String(PowerManagement::instance().hasBattery()));
   info.add(category, "On Battery",
            String(PowerManagement::instance().onBattery()));
+#endif
 }
 
 

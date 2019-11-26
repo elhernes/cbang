@@ -35,7 +35,9 @@
 
 #include <cbang/Catch.h>
 #include <cbang/net/Swab.h>
+#ifdef HAVE_OPENSSL
 #include <cbang/openssl/Digest.h>
+#endif
 #include <cbang/util/Random.h>
 
 #include <cstring> // memcpy()
@@ -100,8 +102,10 @@ bool Websocket::upgrade() {
 
     // Send handshake
     key += "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
+#ifdef HAVE_OPENSSL
     key = Digest::base64(key, "sha1");
-
+#endif
+    
     setVersion(Version(1, 1));
     outSet("Upgrade", "websocket");
     outSet("Connection", "upgrade");

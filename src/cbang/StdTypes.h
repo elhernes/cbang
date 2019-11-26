@@ -73,6 +73,8 @@ namespace {
 #include <stdint.h>
 #endif
 
+#if !defined(uint128_t)
+
 struct uint128_t {
   uint64_t hi;
   uint64_t lo;
@@ -84,6 +86,8 @@ struct uint128_t {
   operator bool () {return hi || lo;}
 #endif // __cplusplus
 };
+
+#endif
 
 #ifdef __cplusplus
 #include <ostream>

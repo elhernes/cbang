@@ -38,7 +38,6 @@
 
 using namespace cb;
 
-
 BigNum cb::RSA::getN() const {
   const BIGNUM *n;
   RSA_get0_key(rsa, &n, 0, 0);
