@@ -210,6 +210,7 @@ Version SystemInfo::getOSVersion() const {
 
   SInt32 major=version_[0];
   SInt32 minor=version_[1];
+  SInt32 release=version_[2];
 
   return Version((uint8_t)major, (uint8_t)minor, (uint8_t)release);
 
