@@ -246,12 +246,11 @@ void SystemInfo::add(Info &info) {
   info.add(category, "OS Version",
            SSTR((unsigned)osVersion.getMajor() << '.'
                 << (unsigned)osVersion.getMinor()));
-#if 0
+
   info.add(category, "Has Battery",
            String(PowerManagement::instance().hasBattery()));
   info.add(category, "On Battery",
            String(PowerManagement::instance().onBattery()));
-#endif
 }
 
 

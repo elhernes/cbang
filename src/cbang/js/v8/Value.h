@@ -84,26 +84,26 @@ namespace cb {
       void assertBoolean() const
       {if (!isBoolean()) CBANG_THROW("Value is not a boolean");}
       bool isBoolean() const {return value->IsBoolean();}
-      bool toBoolean() const {assertDefined(); return value->BooleanValue(getIso());}
+      bool toBoolean() const {assertDefined(); return value->BooleanValue();}
 
       // Number
       void assertNumber() const
       {if (!isNumber()) CBANG_THROW("Value is not a number");}
       bool isNumber() const {return value->IsNumber();}
-      double toNumber() const {assertDefined(); return value->NumberValue(getCtx()).FromJust();}
-      int toInteger() const {assertDefined(); return value->IntegerValue(getCtx()).FromJust();}
+      double toNumber() const {assertDefined(); return value->NumberValue();}
+      int toInteger() const {assertDefined(); return value->IntegerValue();}
 
       // Int32
       void assertInt32() const
       {if (!isInt32()) CBANG_THROW("Value is not a int32");}
       bool isInt32() const {return value->IsInt32();}
-      int32_t toInt32() const {assertDefined(); return value->Int32Value(getCtx()).FromJust();}
+      int32_t toInt32() const {assertDefined(); return value->Int32Value();}
 
       // Uint32
       void assertUint32() const
       {if (!isUint32()) CBANG_THROW("Value is not a uint32");}
       bool isUint32() const {return value->IsUint32();}
-      uint32_t toUint32() const {assertDefined(); return value->Uint32Value(getCtx()).FromJust();}
+      uint32_t toUint32() const {assertDefined(); return value->Uint32Value();}
 
       // String
       static v8::Local<v8::String> createString(const char *s, unsigned length);
@@ -114,7 +114,7 @@ namespace cb {
       bool isString() const {return value->IsString();}
       std::string toString() const;
 
-      int utf8Length() const {return v8::String::Cast(*value)->Utf8Length(getIso());}
+      int utf8Length() const {return v8::String::Cast(*value)->Utf8Length();}
 
       // Object
       static Value createObject()

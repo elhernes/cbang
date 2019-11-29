@@ -123,7 +123,6 @@ bool KeyPair::isDSA() const {return EVP_PKEY_base_id(key) == EVP_PKEY_DSA;}
 bool KeyPair::isDH() const {return EVP_PKEY_base_id(key) == EVP_PKEY_DH;}
 bool KeyPair::isEC() const {return EVP_PKEY_base_id(key) == EVP_PKEY_EC;}
 
-#define EVP_PKEY_get0_RSA EVP_PKEY_get1_RSA
 
 cb::RSA KeyPair::getRSA() const {
   if (!isRSA()) THROW("Not an RSA key");
